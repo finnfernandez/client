@@ -1,0 +1,62 @@
+<mat-card>
+  <mat-card-title> Bussiness Indicators</mat-card-title>
+  <mat-card-subtitle> Get info about indicators</mat-card-subtitle>
+  <mat-card-content>
+    <form [formGroup]="indicatorForm" (ngSubmit)="onFormSubmit()" class="book-form">
+      <mat-form-field class="select-book">
+        <input type="text" placeholder="Select an indicator" matInput formControlName="indicator"
+          [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+          <mat-option *ngFor="let indicator of $filteredIndicators | async" [value]="indicator">
+            {{indicator}}
+          </mat-option>
+        </mat-autocomplete>
+        <mat-error *ngIf="indicator?indicator.hasError('required'):''">
+          Indicator required.
+        </mat-error>
+      </mat-form-field>
+    </form>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button type="button" (click)="onFormSubmit()">Show graph value</button>
+    <button mat-raised-button type="button" (click)="resetForm()">Clean</button>
+  </mat-card-actions>
+</mat-card>
+
+
+<div *ngIf="visibleGraph">
+  <mat-card>
+    <mat-card-title> Indicator Graph Value</mat-card-title>
+    <mat-card-subtitle> Get graph info about {{selectedIndicator}}</mat-card-subtitle>
+    <mat-card-content>
+      <div echarts [options]="options" theme="macarons" [merge]="mergeOption" [loading]="loading" class="chart"
+        (chartClick)="chartClick($event)"></div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-title> Indicator Date Value</mat-card-title>
+    <mat-card-subtitle> Get info about {{selectedIndicator}} from a selected date</mat-card-subtitle>
+    <mat-card-content>
+      <mat-form-field>
+        <input matInput [matDatepicker]="picker" placeholder="Choose a date" (dateChange)="selectedDate($event)">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <div *ngIf="visibleDateResult">
+        <mat-list>
+          <mat-list-item>
+            <mat-icon mat-list-icon>monetization_on</mat-icon>
+            <p mat-line>{{dayValue.name}}</p>
+            <p mat-line>Date: {{dayValue.date}}</p>
+            <p mat-line>Key: {{dayValue.key}} </p>
+            <p mat-line>Unit: {{dayValue.unit}} </p>
+            <p mat-line>Value: {{dayValue.value === 0 ? 'Does not exists info for the selected date, please try
+              another.'
+              : dayValue.value }} </p>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

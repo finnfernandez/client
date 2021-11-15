@@ -1,1 +1,25 @@
+/* Add application styles & imports to this file! */
+
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+@import url( 'https://fonts.googleapis.com/css?family=Roboto:400,700|Material+Icons');
 /* You can add global styles to this file, and also import other style files */
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+
+.example-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.example-full-width {
+  width: 100%;
+}
